@@ -1,3 +1,4 @@
+sqlnet.log
 .DS_Store
 db/*.db
 db/*.sqlite3
