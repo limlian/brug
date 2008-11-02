@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+#admin's password: 'changeme'
+admin:
+  id: 1
+  username: admin
+  email: admin@brug.org
+  passwd_salt: eeeef44c15143cf217f8b3c82690406efd6febb8
+  passwd_hash: a4c28f6157c7659e9e6b28fa4a42a3b8dd44ec36
+  fname: 'admin'
+  lname: 'brug'
+
+#limlian's password: 'changeme'
+limlian:
+  id: 2
+  username: limlian
+  email: limlian@example.com
+  passwd_salt: 868e56f4338e967afe73a0f7d5e36ddd8df4494d
+  passwd_hash: c05799662aa55e481642d18a58b4b888826a2e1a
+  fname: 'Lian'
+  lname: 'Liming'
+  
