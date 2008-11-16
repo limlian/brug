@@ -1,0 +1,9 @@
+<div id="login-form">
+  <% form_tag :action => 'login' do %>
+    <%= label_tag 'login-email', 'Email' -%>
+    <%= text_field_tag 'email' %>
+    <%= label_tag 'login-password', 'Password' -%>
+    <%= text_field_tag 'password' %>
+    <%= submit_tag 'login' %>
+  <% end %>
+</div>
