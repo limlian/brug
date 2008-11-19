@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
      :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,
      :message => 'is invlid'
   validates_presence_of :password, :message => 'is required'
+  validates_confirmation_of :password, :message => 'should match'
   
   def self.authenticate(email, passwd)
     user = User.find_by_email(email);

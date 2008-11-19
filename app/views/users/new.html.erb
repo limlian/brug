@@ -1,0 +1,17 @@
+<div id="registration-form">
+  <% form_for :user, :url => users_url do |f| %>
+    <%= f.label :fname, "First Name:" %>
+    <%= f.text_field :fname %><br />
+    <%= f.label :lname, "Last Name:" %>
+    <%= f.text_field :lname %><br />
+    <%= f.label :username, "Username:" %>
+    <%= f.text_field :username %><br />
+    <%= f.label :email, "Email:" %>
+    <%= f.text_field :email %><br />
+    <%= f.label :password, "Password:" %>
+    <%= f.password_field :password %><br />
+    <%= f.label :verify, "Verify Password:" %>
+    <%= f.password_field :password_confirmation %><br />
+    <%= submit_tag "Register" %>
+  <% end %>
+</div>
