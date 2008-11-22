@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe User do
   before(:each) do
+    User.delete_all
     @valid_attributes = {
       :username => 'demo',
       :fname => 'demo',
@@ -30,10 +31,10 @@ describe User do
   end
 
   it "should reject incorrect formats of email" do 
-    @valid_attributes[:email] = "admin"
+    @valid_attributes[:email] = "demo"
     lambda { User.create!(@valid_attributes) }.should raise_error(ActiveRecord::RecordInvalid, "Validation failed: Email is invlid")
 
-    @valid_attributes[:email] = "admin@"
+    @valid_attributes[:email] = "demo@"
     lambda { User.create!(@valid_attributes) }.should raise_error(ActiveRecord::RecordInvalid, "Validation failed: Email is invlid")
 
     @valid_attributes[:email] = "@brug.org"
@@ -47,25 +48,46 @@ describe User do
 
   it "should authenticate with correct admin user password" do
     User.create!(@valid_attributes)
-    user = User.authenticate('admin@brug.org', 'changeme')
+    user = User.authenticate('demo@brug.org', 'changeme')
     user.should_not be_nil
 
-    user = User.authenticate('admin@brug.org', 'changeyou')
+    user = User.authenticate('demo@brug.org', 'changeyou')
     user.should be_nil
     
     user = User.authenticate('', 'changeme')
     user.should be_nil
 
-    user = User.authenticate('admin@brug.org', '')
+    user = User.authenticate('demo@brug.org', '')
     user.should be_nil
 
     user = User.authenticate('', '')
     user.should be_nil
   end
+
+  it "should correctly delete an user" do
+    User.create!(@valid_attributes)
+    
+    user = User.find_by_email('demo@brug.org')
+    user.should_not be_nil
+
+    user.destroy
+
+    user = User.find_by_email('demo@brug.org')
+    user.should be_nil
+  end
+
+  it "should raise error when have different password_confirmation" do
+    @valid_attributes[:password_confirmation] = "changeyou"
+    lambda { User.create!(@valid_attributes) }.should raise_error(ActiveRecord::RecordInvalid, "Validation failed: Password should match")
+  end
 end
 
 describe User, "with fixtures loaded" do
   fixtures :users
+
+  after(:each) do
+    User.delete_all
+  end
 
   it "should tell correct numbers of users defined in fixtures" do
     User.should have(2).records

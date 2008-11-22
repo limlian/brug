@@ -8,9 +8,10 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       if @user.save
+        flash[:notice] = "Registration successed"
         format.html {redirect_to :controller => 'login'}
       else
-        format.html {redirect_to :action => "new"}
+        format.html {render :action => "new"}
       end
     end
   end

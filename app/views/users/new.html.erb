@@ -1,4 +1,5 @@
 <div id="registration-form">
+  <%= error_messages_for 'user', :header_message => "Registration failed" %>
   <% form_for :user, :url => users_url do |f| %>
     <%= f.label :fname, "First Name:" %>
     <%= f.text_field :fname %><br />

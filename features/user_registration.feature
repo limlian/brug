@@ -5,17 +5,21 @@
 
   场景:注册一个系统中没有的用户名
     假如我访问网站注册页面
-    而且系统中没有用户名为"limlian"的用户
-    当我填入"limlian"的注册信息
-    而且点击create按钮
-    那么我应该看到"注册成功"的信息
+    而且系统中没有email为demo@example.com的用户
+    当我填入demo@example.com的注册信息
+    而且点击Register按钮
+    那么系统中将有email为demo@example.com的用户
+    而且我应该到达login/index页面
+    而且我应该看到Registration successed的信息
     
   场景:注册一个系统中已经存在的用户名
     假如我访问网站注册页面
-    而且系统中已经有用户名为"limlian"的用户
-    当我填入"limlian"的注册信息
-    而且点击create按钮
-    那么我应该看到"注册失败,您的用户名已经被注册过!"的信息
+    而且系统中已经有email为demo@gmail.com的用户
+    当我填入demo@gmail.com的注册信息
+    而且点击Register按钮
+    那么我应该到达users/new页面
+    而且我应该看到Registration failed的信息
+    而且我应该看到Email has been used的信息
   
       		
 				

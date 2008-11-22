@@ -20,6 +20,7 @@ describe UsersController do
     @user = mock("user")
 
     @user.stub!(:new_record?).and_return(false)
+    @user.stub!(:errors).and_return([])
     User.stub!(:new).and_return(@user)
 
     @user_hash = {"fname" => "liming", 
@@ -48,7 +49,7 @@ describe UsersController do
     @user.should_receive(:save).and_return(false)
 
     post "create", {:user => @user_hash}
-    response.should redirect_to(:action => "new")    
+    response.should render_template(:new)
   end
 end
 
@@ -57,8 +58,11 @@ describe UsersController do
 
   before(:each) do
     @user = mock("user")
-
+    @errors = mock("errors")
+    
     @user.stub!(:new_record?).and_return(false)
+    @user.stub!(:errors).and_return(@errors)
+    @errors.stub!(:count).and_return(0)
     User.stub!(:new).and_return(@user)
   end
 

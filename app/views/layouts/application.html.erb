@@ -5,6 +5,11 @@
     <title></title>
   </head>
   <body>
+    <% if flash[:notice] %>
+    <div id="flash">
+      <%= flash[:notice] %>
+    </div>
+    <% end %>
     <%= yield :layout %>
   </body>  
 </html>
