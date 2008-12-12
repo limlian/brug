@@ -86,11 +86,11 @@ describe User, "with fixtures loaded" do
   fixtures :users
 
   after(:each) do
-    User.delete_all
+    # User.delete_all
   end
 
   it "should tell correct numbers of users defined in fixtures" do
-    User.should have(2).records
+    User.should have(5).records
   end
 
   it "should report error when add user with existed username" do
@@ -115,5 +115,97 @@ describe User, "with fixtures loaded" do
          :lname => 'brug'
       )                     
     }.should raise_error(ActiveRecord::RecordInvalid, "Validation failed: Email has been used")
+  end
+end
+
+describe User, "friends with fixtures loaded" do
+  fixtures :users
+
+  after(:each) do
+  end
+
+  it "should tell correct numbers of users defined in fixtures" do
+    User.should have(5).records
+  end
+
+  it "should tell correctly if one is another's friend" do
+    user_demo1 = User.find_by_email('demo1@example.com')
+    user_demo2 = User.find_by_email('demo2@example.com')
+    user_demo3 = User.find_by_email('demo3@example.com')
+
+    user_demo1.friends.empty?.should be_false
+    user_demo2.friends.empty?.should be_false
+    user_demo3.friends.empty?.should be_false
+
+    user_demo1.is_my_friend?(user_demo2).should be_true
+    user_demo1.is_my_friend?(user_demo3).should be_false
+
+    user_demo2.is_my_friend?(user_demo1).should be_true
+    user_demo2.is_my_friend?(user_demo3).should be_true
+
+    user_demo3.is_my_friend?(user_demo2).should be_true
+    user_demo3.is_my_friend?(user_demo1).should be_false
+  end
+
+  it " myself can't be my friend" do
+    user_demo1 = User.find_by_email('demo1@example.com')
+    user_demo1.is_my_friend?(user_demo1).should be_false
+
+    user_demo1.add_friend user_demo1
+    user_demo1.is_my_friend?(user_demo1).should be_false
+
+    user_demo1_1 = User.find_by_email('demo1@example.com')
+    user_demo1_1.is_my_friend?(user_demo1).should be_false
+
+    user_demo1_1.add_friend user_demo1
+    user_demo1_1.is_my_friend?(user_demo1).should be_false
+  end
+
+  it "should allow user add a new friend" do
+    user_demo1 = User.find_by_email('demo1@example.com')
+    user_demo3 = User.find_by_email('demo3@example.com')
+
+    user_demo1.is_my_friend?(user_demo3).should be_false
+    user_demo3.is_my_friend?(user_demo1).should be_false
+
+    user_demo1.add_friend user_demo3
+
+    user_demo1.is_my_friend?(user_demo3).should be_true
+    user_demo3.is_my_friend?(user_demo1).should be_true
+  end
+
+  it "should allow user delete an existed friend" do
+    user_demo1 = User.find_by_email('demo1@example.com')
+    user_demo2 = User.find_by_email('demo2@example.com')
+
+    user_demo1.is_my_friend?(user_demo2).should be_true
+    user_demo2.is_my_friend?(user_demo1).should be_true
+
+    user_demo1.has_friends?.should be_true
+    
+    user_demo1.remove_friend user_demo2
+
+    user_demo1.is_my_friend?(user_demo2).should be_false
+    user_demo2.is_my_friend?(user_demo1).should be_false
+
+    user_demo1.has_friends?.should be_false
+  end
+
+  it "allow to remove all friends" do
+    user_demo1 = User.find_by_email('demo1@example.com')
+    user_demo2 = User.find_by_email('demo2@example.com')
+    user_demo3 = User.find_by_email('demo3@example.com')
+
+    user_demo1.add_friend user_demo3
+
+    user_demo2.has_friends?.should be_true
+    user_demo1.is_my_friend?(user_demo3).should be_true
+    user_demo3.is_my_friend?(user_demo1).should be_true
+    
+    user_demo2.remove_all_friends
+
+    user_demo2.has_friends?.should be_false
+    user_demo1.is_my_friend?(user_demo3).should be_true
+    user_demo3.is_my_friend?(user_demo1).should be_true
   end
 end

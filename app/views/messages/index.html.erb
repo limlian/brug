@@ -1,0 +1,8 @@
+<div>Message List</div>
+<ul id="messages-list">
+<% for message in @messages %>
+  <% case message.type when "FriendInvitationMessage" %>
+    <%= render :partial => "friend_invitation_message", :object => message %>
+  <% end %>
+<% end %>
+</ul>

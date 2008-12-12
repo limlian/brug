@@ -1,0 +1,6 @@
+<div>Hello, <%= @viewer.fname + ' ' + @viewer.lname %> </div>
+<div>
+  <a href="<%= user_url(@viewer) %>">Go to my profile</a><br />
+  <a href="<%= user_friends_url(@viewer) %>">See my friends</a><br />
+  <a href="<%= users_url %>">See all users</a>
+</div> 

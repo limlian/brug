@@ -35,7 +35,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  map.resources :users
+  map.resources :users do |user|
+    user.resources :friends
+    user.resources :messages
+  end
 
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'

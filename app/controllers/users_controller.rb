@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :authorize, :only => [:show]
+  
   def new
     @user = User.new
   end
@@ -14,5 +16,9 @@ class UsersController < ApplicationController
         format.html {render :action => "new"}
       end
     end
+  end
+
+  def show
+    @owner = User.find_by_id(params[:id])
   end
 end

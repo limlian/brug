@@ -1,0 +1,15 @@
+<li>
+  <%= friend_invitation_message.from_user.fname + " " + friend_invitation_message.from_user.lname %> invites you as friend
+  <% if friend_invitation_message.status == "pending" %>
+    <% form_tag user_friends_url(friend_invitation_message.from_user) do %>
+      <%= hidden_field_tag 'friend_user_id', friend_invitation_message.to_user.id %>
+      <%= submit_tag 'Accept' %>
+    <% end %>    
+    <% form_tag user_messages_url(friend_invitation_message.to_user) do %>
+      <%= hidden_field_tag 'invitation_user_id', friend_invitation_message.from_user.id %>
+      <%= hidden_field_tag 'message_type', 'friend_invitation' %>
+      <%= hidden_field_tag 'status', 'deny' %>
+      <%= submit_tag 'Deny' %>
+    <% end %>
+  <% end %>
+</li>

@@ -1,0 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+friend_invitation1:
+  type: FriendInvitationMessage
+  to_user: demo3
+  from_user: demo1
+  status: pending

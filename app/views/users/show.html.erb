@@ -1,0 +1,17 @@
+<div id="user-info">
+  <div id="user-name"><%= @owner.fname + ' ' + @owner.lname %></div>
+  <% unless @owner.is_my_friend?(@viewer)%>
+    <% form_tag user_messages_url(@owner) do %>
+      <%= hidden_field_tag 'invitation_user_id', @viewer.id %>
+      <%= hidden_field_tag 'message_type', 'friend_invitation' %>
+      <%= hidden_field_tag 'status', 'pending' %>
+      <%= submit_tag 'Add as friend' %>
+    <% end %>
+  <% end %>
+</div>
+<div>Friends List</div>
+<ul id="friends-list">
+  <% for friend in @owner.friends %>
+    <li><%= friend.fname + ' ' + friend.lname -%></li>
+  <% end %>
+</ul>

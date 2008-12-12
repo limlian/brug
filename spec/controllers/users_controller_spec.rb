@@ -90,3 +90,91 @@ describe UsersController do
     end
   end
 end
+
+describe "/users/show/1" do
+  controller_name :users
+  integrate_views
+
+  before(:each) do
+    @demo_user1 = mock("user")
+    @demo_user2 = mock("user")
+    @demo_user3 = mock("user")
+    User.stub!(:find).with(1).and_return(@demo_user1)
+    User.stub!(:find).with(2).and_return(@demo_user2)
+
+    @demo_user1.stub!(:friends).and_return([@demo_user2, @demo_user3])
+  end
+
+  it "should log in to view user page" do
+    session[:user_id] = nil
+    get 'show', :id => 1
+    response.should redirect_to(:controller => "login")
+  end
+  
+  it "should display correctly when visit my friend's user page" do
+    User.should_receive(:find_by_id).with("1").once.and_return(@demo_user1)
+    @demo_user1.should_receive(:fname).and_return('demo1')
+    @demo_user1.should_receive(:lname).and_return('demo1')
+    @demo_user1.should_receive(:is_my_friend?).with(@demo_user2).and_return(true)
+    User.should_receive(:find_by_id).with(2).and_return(@demo_user2)
+    @demo_user1.should_receive(:friends).and_return([@demo_user2, @demo_user3])
+
+    @demo_user2.should_receive(:fname).and_return('demo2')
+    @demo_user2.should_receive(:lname).and_return('demo2')
+    @demo_user3.should_receive(:fname).and_return('demo3')
+    @demo_user3.should_receive(:lname).and_return('demo3')
+
+    session[:user_id] = 2
+    get 'show', :id => 1
+
+    response.should_not redirect_to(:controller => "login")
+    response.should be_success
+    response.should render_template(:show)
+
+    response.should have_tag('div#user-info') do
+      with_tag('div#user-name', 'demo1 demo1')
+    end
+    
+    response.should have_tag('ul#friends-list') do
+      with_tag('li', 'demo2 demo2')
+      with_tag('li', 'demo3 demo3')
+    end
+    
+  end
+
+  it "should display correctly when visit page of user who isn't my friend" do
+    User.should_receive(:find_by_id).with("1").once.and_return(@demo_user1)
+    @demo_user1.should_receive(:fname).and_return('demo1')
+    @demo_user1.should_receive(:lname).and_return('demo1')
+    @demo_user1.should_receive(:is_my_friend?).with(@demo_user2).and_return(false)
+    @demo_user1.should_receive(:friends).and_return([@demo_user3])
+
+    User.should_receive(:find_by_id).with(2).and_return(@demo_user2)
+    @demo_user2.should_receive(:id).and_return(2)
+
+    @demo_user3.should_receive(:fname).and_return('demo3')
+    @demo_user3.should_receive(:lname).and_return('demo3')
+
+    session[:user_id] = 2
+    get 'show', :id => 1
+
+    response.should_not redirect_to(:controller => "login")
+    response.should be_success
+    response.should render_template(:show)
+
+    response.should have_tag('div#user-info') do
+      with_tag('div#user-name', 'demo1 demo1')
+    end
+
+    response.should have_tag("form") do
+      with_tag("input[name=invitation_user_id][type=hidden][value=2]")
+      with_tag("input[name=status][type=hidden][value='pending']")
+      with_tag("input[type=submit][value='Add as friend']")
+    end
+    
+    response.should have_tag('ul#friends-list') do
+      with_tag('li', 'demo3 demo3')
+    end
+
+  end
+end
