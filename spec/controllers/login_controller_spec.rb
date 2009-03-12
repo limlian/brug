@@ -8,7 +8,7 @@ describe LoginController do
   end
 
   it "should have correct route" do
-    route_for(:controller => 'login').should == '/login'
+    route_for(:controller => 'login', :action => 'index').should == '/login'
     params_from(:get, "/login").should == {:controller => 'login', :action => 'index'}
   end
 end

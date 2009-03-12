@@ -10,3 +10,4 @@ log/*.pid
 config/database.yml
 coverage
 stories
+vendor

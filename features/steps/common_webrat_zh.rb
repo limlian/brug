@@ -1,9 +1,9 @@
 When /^我访问(.*)页面$/ do |page|
-  visits page
+  visit page
 end
 
 When /^我点击(.*)按钮$/ do |button|
-  clicks_button button
+  click_button button
 end
 
 Then /^我应该到达(.*)页面$/ do |page|
