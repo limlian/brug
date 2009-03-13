@@ -41,10 +41,12 @@ describe HomeController, "integrated with views" do
     User.stub!(:find_by_id).with(1).and_return(@user)
     @user.stub!(:fname).and_return('demo')
     @user.stub!(:lname).and_return('demo')
+    @user.stub!(:id).and_return(1)
   end
 
   it "should see the home when having logged in" do
     User.should_receive(:find_by_id).with(1).and_return(@user)
+    @user.should_receive(:id).and_return(1)
 
     session[:user_id] = 1
     get 'index'

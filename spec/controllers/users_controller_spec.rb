@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe UsersController do
-
   #Delete this example and add some real ones
   it "should use UsersController" do
     controller.should be_an_instance_of(UsersController)
@@ -12,7 +11,6 @@ describe UsersController do
     params_from(:post, "/users").should == {:controller => "users", :action => "create"}
     params_from(:get, "/users/new").should == {:controller => "users", :action => "new"}
   end
-
 end
 
 describe UsersController do
@@ -52,6 +50,7 @@ describe UsersController do
     response.should render_template(:new)
   end
 end
+
 
 describe UsersController do
   integrate_views
@@ -101,6 +100,7 @@ describe "/users/show/1" do
     @demo_user3 = mock("user")
     User.stub!(:find).with(1).and_return(@demo_user1)
     User.stub!(:find).with(2).and_return(@demo_user2)
+    User.stub!(:find_by_id).with(nil).and_return(nil)
 
     @demo_user1.stub!(:friends).and_return([@demo_user2, @demo_user3])
   end
@@ -110,7 +110,7 @@ describe "/users/show/1" do
     get 'show', :id => 1
     response.should redirect_to(:controller => "login")
   end
-  
+
   it "should display correctly when visit my friend's user page" do
     User.should_receive(:find_by_id).with("1").once.and_return(@demo_user1)
     @demo_user1.should_receive(:fname).and_return('demo1')
@@ -175,6 +175,6 @@ describe "/users/show/1" do
     response.should have_tag('ul#friends-list') do
       with_tag('li', 'demo3 demo3')
     end
-
   end
 end
+
