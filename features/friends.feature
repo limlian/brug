@@ -1,33 +1,33 @@
-功能:朋友管理
-  为了和我的朋友保持联系
-  作为brug网站的用户
-  我希望能够管理我在brug网站上朋友
+Feature: friends management
+  In order to keep in touch with my friends
+  As a brug user
+  I want to manage friends contacts in brug
+  
+  Scenario: Add friend
+  Given there is no user in the system
+  And add a new user "demo1@example.com"
+  And add a new user "demo2@example.com"
+  And "demo1@example.com" has no friends
+  When I log in as "demo1@example.com"
+  And I visit "demo1@example.com" user page
+  Then I should not see user "demo2@example.com" in the "friends-list"
 
-  场景:添加好友
-    假如系统中没有用户
-    而且系统添加demo1@example.com用户
-    而且系统添加demo2@example.com用户
-    而且demo1@example.com用户没有朋友
-    当我用demo1@example.com用户登录
-    而且访问demo1@example.com用户页面
-    那么我应该在friends-list列表里面看不到demo2@example.com用户
+  When I log in as "demo1@example.com"
+  And I visit "demo2@example.com" user page
+  And I press "Add as friend"
+  And I visit "demo1@example.com" user page
+  Then I should not see user "demo2@example.com" in the "friends-list"
 
-    当我用demo1@example.com用户登录
-    而且访问demo2@example.com用户页面 
-    而且我点击Add as friend按钮
-    而且访问demo1@example.com用户页面
-    那么我应该在friends-list列表里面看不到demo2@example.com用户
+  When I log in as "demo2@example.com"
+  And I visit "demo2@example.com" message page
+  Then I should see friend request from "demo1@example.com"
 
-    当我用demo2@example.com用户登录
-    而且访问demo2@example.com的消息页面
-    那么我应该看到demo1@example.com的添加好友请求
-    
-    当我用demo2@example.com用户登录
-    而且访问demo2@example.com的消息页面
-    而且我点击Accept按钮
-    而且访问demo2@example.com用户页面
-    那么我应该在friends-list列表里面看到demo1@example.com用户
-
-    当我用demo1@example.com用户登录
-    而且访问demo1@example.com用户页面
-    那么我应该在friends-list列表里面看到demo2@example.com用户
+  When I log in as "demo2@example.com"
+  And I visit "demo2@example.com" message page
+  And I press "Accept"
+  And I visit "demo2@example.com" user page
+  Then I should see user "demo1@example.com" in the "friends-list"  
+  
+  When I log in as "demo1@example.com"
+  And I visit "demo1@example.com" user page
+  Then I should see user "demo2@example.com" in the "friends-list"  

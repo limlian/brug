@@ -1,12 +1,15 @@
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
+When /^I visit "(.*)"$/ do |page|
+  visit page
+end
 
 When /^I press "(.*)"$/ do |button|
-  clicks_button(button)
+  click_button(button)
 end
 
 When /^I follow "(.*)"$/ do |link|
-  clicks_link(link)
+  click_link(link)
 end
 
 When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
@@ -39,4 +42,8 @@ end
 
 Then /^I should not see "(.*)"$/ do |text|
   response.body.should_not =~ /#{text}/m
+end
+
+Then /^I should navigate to page "(.*)"$/ do |page|
+  response.should render_template(page)  
 end
